@@ -1,0 +1,30 @@
+name: sql-query-patterns-study
+
+services:
+  db:
+    image: postgres:18.6-bookworm
+    environment:
+      POSTGRES_DB: sql_patterns_study
+      POSTGRES_USER: study
+      POSTGRES_PASSWORD: ${SQL_PATTERNS_DB_PASSWORD:?Set SQL_PATTERNS_DB_PASSWORD in .env}
+      POSTGRES_INITDB_ARGS: --encoding=UTF8
+    # CLI と GUI で日時の解釈と表示形式を揃える。
+    command: ["postgres", "-c", "timezone=UTC", "-c", "datestyle=ISO,YMD"]
+    ports:
+      - "127.0.0.1:15432:5432"
+    volumes:
+      # PostgreSQL 18 の公式イメージは、この配下のバージョン別ディレクトリに DB を保存する。
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      # 初期化時に使うソケット専用の一時サーバーではなく、TCP で接続できる本起動を待つ。
+      test:
+        [
+          "CMD-SHELL",
+          'pg_isready -h 127.0.0.1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"',
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
