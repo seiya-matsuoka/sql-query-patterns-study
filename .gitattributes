@@ -1,6 +1,6 @@
 * text=auto
 *.sh text eol=lf
-*.sql text eol=lf
+*.sql text eol=lf linguist-detectable
 *.csv text eol=lf
 *.yaml text eol=lf
 *.md text eol=lf
