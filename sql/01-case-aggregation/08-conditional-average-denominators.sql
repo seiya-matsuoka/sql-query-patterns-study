@@ -1,6 +1,6 @@
 -- example: conditional-average-input-values
 -- 問い：支払済み金額の平均を求める前に、ELSE 省略と ELSE 0.00 が各注文からどの値を渡すか。
--- 入力は conditional-order-metrics.sql の顧客 1 と同じ 5 注文で、1 注文 1 行の明細を保つ。
+-- 入力は 07-conditional-order-metrics.sql の顧客 1 と同じ 5 注文で、1 注文 1 行の明細を保つ。
 -- ここでは集約せず、後の AVG の分子・分母を、元の金額と二つの CASE の結果から追う。
 -- paid_amount は支払済みなら金額、それ以外は ELSE 省略による NULL である。
 -- paid_amount_else_zero は支払済みなら同じ金額、それ以外は 0.00 である。
@@ -43,7 +43,7 @@ ORDER BY
 
 -- example: conditional-average-denominator-comparison
 -- 問い：金額 NULL・実額 0・支払済みなしを含む顧客ごとに、二つの平均とその分母を比較する。
--- 入力は conditional-order-metrics.sql と同じ 10 注文であり、結果は注文がある 1 顧客 1 行の 5 行である。
+-- 入力は 07-conditional-order-metrics.sql と同じ 10 注文であり、結果は注文がある 1 顧客 1 行の 5 行である。
 -- order_count は全注文数、paid_order_count は金額不明も含む支払済み注文数である。
 -- known_paid_amount_count は支払済みで金額が非 NULL の件数で、paid_average_case と paid_average_filter の共通の分母になる。
 -- 両平均は同じ条件と金額を使い、CASE 側は非該当を NULL にするため、同じ値・重複数を対象にする同等比較である。
@@ -60,7 +60,7 @@ ORDER BY
 -- 右はその金額 NULL を補わず、未払い行だけを 0.00 にするので分母 1・平均 0 になる。
 -- ELSE 0.00 は平均の要件を変える。未払いも 0 として含める指標が必要なときに、その分母の定義と合わせて使う。
 -- 支払済みの金額不明も 0 とみなして全注文数で割る指標は、この式とは異なる。ここでは不明金額の補完は行わない。
--- 顧客 6 の注文はないためグループもない。入力が 0 行の集約は empty-conditional-aggregates.sql で比較する。
+-- 顧客 6 の注文はないためグループもない。入力が 0 行の集約は 09-empty-conditional-aggregates.sql で比較する。
 -- AVG の値は丸めず、PostgreSQL の numeric の表示をそのまま使う。性能は未評価である。
 SELECT
     customer_id,

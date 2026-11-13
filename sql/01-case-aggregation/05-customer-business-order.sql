@@ -1,6 +1,6 @@
 -- example: customer-tier-value-order
 -- 問い：顧客を区分コードの値順に並べたとき、希望する業務順になるかを確認する。
--- 入力は customer-tier-labels.sql と同じ専用の 6 顧客で、結果の 1 行は 1 顧客を表す。
+-- 入力は 02-customer-tier-labels.sql と同じ専用の 6 顧客で、結果の 1 行は 1 顧客を表す。
 -- 顧客区分は premium / standard / guest、未定義の partner、未登録の NULL を含む。
 -- VALUES はこの問い合わせ内だけの表であり、記述した行の順序を結果の順序として保証しない。
 -- 希望する業務順は premium → standard → guest → 未定義のコード → NULL とする。

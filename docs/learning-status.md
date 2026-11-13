@@ -5,17 +5,17 @@
 
 ## 教材一覧
 
-| 区分                       | 教材                                                                                  | 作成     | 実行検証            | 教材レビュー                     | 本人の学習 |
-| -------------------------- | ------------------------------------------------------------------------------------- | -------- | ------------------- | -------------------------------- | ---------- |
-| CASE・条件付き集約・FILTER | [支払済み注文の件数と合計](../sql/01-case-aggregation/paid-order-summary.sql)         | 作成済み | CLI で 5 問照合済み | 再レビュー済み・指摘 3 件解消    | 完了       |
-| CASE・条件付き集約・FILTER | [顧客区分のラベル化](../sql/01-case-aggregation/customer-tier-labels.sql)             | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [金額帯の分類](../sql/01-case-aggregation/order-amount-bands.sql)                     | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [注文対応の優先順位](../sql/01-case-aggregation/order-handling-priority.sql)          | 作成済み | CLI で 1 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [顧客の業務順](../sql/01-case-aggregation/customer-business-order.sql)                | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [金額帯別の集計](../sql/01-case-aggregation/amount-band-summary.sql)                  | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
-| CASE・条件付き集約・FILTER | [複数の条件別指標](../sql/01-case-aggregation/conditional-order-metrics.sql)          | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
-| CASE・条件付き集約・FILTER | [平均へ渡す値と分母](../sql/01-case-aggregation/conditional-average-denominators.sql) | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
-| CASE・条件付き集約・FILTER | [空入力の条件付き集約](../sql/01-case-aggregation/empty-conditional-aggregates.sql)   | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| 区分                       | 教材                                                                                     | 作成     | 実行検証            | 教材レビュー                     | 本人の学習 |
+| -------------------------- | ---------------------------------------------------------------------------------------- | -------- | ------------------- | -------------------------------- | ---------- |
+| CASE・条件付き集約・FILTER | [支払済み注文の件数と合計](../sql/01-case-aggregation/01-paid-order-summary.sql)         | 作成済み | CLI で 5 問照合済み | 再レビュー済み・指摘 3 件解消    | 完了       |
+| CASE・条件付き集約・FILTER | [顧客区分のラベル化](../sql/01-case-aggregation/02-customer-tier-labels.sql)             | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [金額帯の分類](../sql/01-case-aggregation/03-order-amount-bands.sql)                     | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [注文対応の優先順位](../sql/01-case-aggregation/04-order-handling-priority.sql)          | 作成済み | CLI で 1 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [顧客の業務順](../sql/01-case-aggregation/05-customer-business-order.sql)                | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [金額帯別の集計](../sql/01-case-aggregation/06-amount-band-summary.sql)                  | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [複数の条件別指標](../sql/01-case-aggregation/07-conditional-order-metrics.sql)          | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [平均へ渡す値と分母](../sql/01-case-aggregation/08-conditional-average-denominators.sql) | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [空入力の条件付き集約](../sql/01-case-aggregation/09-empty-conditional-aggregates.sql)   | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
 
 初回教材の入力は [固定データ](../data/reset.sql) で定義する。
 分類・優先順位・業務順と、分類別集計・条件別指標の教材は、それぞれの問い合わせ内の `VALUES` で専用入力を定義する。
@@ -23,13 +23,13 @@
 
 ### 初回 CASE/FILTER 教材
 
-| 問い合わせの識別子         | 読む内容                                                                 | 期待 CSV                                                                               |
-| -------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| `paid-summary-case`        | 顧客 1 の支払済み 2 件と判明分の合計 100.00 を CASE で求める             | [CSV](../expected/01-case-aggregation/paid-order-summary/paid-summary-case.csv)        |
-| `paid-summary-filter`      | 同じ条件と集計単位で FILTER の結果を比べる                               | [CSV](../expected/01-case-aggregation/paid-order-summary/paid-summary-filter.csv)      |
-| `paid-summary-by-customer` | 支払済みがない顧客と金額不明の顧客で、NULL と `ELSE 0.00` の結果を比べる | [CSV](../expected/01-case-aggregation/paid-order-summary/paid-summary-by-customer.csv) |
-| `no-paid-order-rows`       | 該当する注文の明細が 0 行となる場合を確認する                            | [CSV](../expected/01-case-aggregation/paid-order-summary/no-paid-order-rows.csv)       |
-| `aggregate-on-empty-input` | 入力が 0 行でも、グループ分けしない集約は 1 行を返すことを確認する       | [CSV](../expected/01-case-aggregation/paid-order-summary/aggregate-on-empty-input.csv) |
+| 問い合わせの識別子         | 読む内容                                                                 | 期待 CSV                                                                                  |
+| -------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| `paid-summary-case`        | 顧客 1 の支払済み 2 件と判明分の合計 100.00 を CASE で求める             | [CSV](../expected/01-case-aggregation/01-paid-order-summary/paid-summary-case.csv)        |
+| `paid-summary-filter`      | 同じ条件と集計単位で FILTER の結果を比べる                               | [CSV](../expected/01-case-aggregation/01-paid-order-summary/paid-summary-filter.csv)      |
+| `paid-summary-by-customer` | 支払済みがない顧客と金額不明の顧客で、NULL と `ELSE 0.00` の結果を比べる | [CSV](../expected/01-case-aggregation/01-paid-order-summary/paid-summary-by-customer.csv) |
+| `no-paid-order-rows`       | 該当する注文の明細が 0 行となる場合を確認する                            | [CSV](../expected/01-case-aggregation/01-paid-order-summary/no-paid-order-rows.csv)       |
+| `aggregate-on-empty-input` | 入力が 0 行でも、グループ分けしない集約は 1 行を返すことを確認する       | [CSV](../expected/01-case-aggregation/01-paid-order-summary/aggregate-on-empty-input.csv) |
 
 ### CASE の分類・優先順位・業務順
 
@@ -38,37 +38,37 @@
 この作業単位は制作・CLI 検証と静的な独立レビューが済み、修正が必要な指摘はない。
 この教材は両 GUI での本人確認を経て `main` に取り込み済みであり、本人の申告に基づく学習完了も記録した。
 
-| 問い合わせの識別子                     | 読む内容                                                      | 期待 CSV                                                                                                |
-| -------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `customer-tier-label-comparison`       | 固定コードを変換する単純 CASE と検索 CASE の同等比較          | [CSV](../expected/01-case-aggregation/customer-tier-labels/customer-tier-label-comparison.csv)          |
-| `customer-tier-null-and-else`          | WHEN NULL と IS NULL、未定義コード、ELSE 省略による結果の違い | [CSV](../expected/01-case-aggregation/customer-tier-labels/customer-tier-null-and-else.csv)             |
-| `amount-band-equivalent-ranges`        | 上位からの下限判定と、重ならない金額範囲による同等比較        | [CSV](../expected/01-case-aggregation/order-amount-bands/amount-band-equivalent-ranges.csv)             |
-| `amount-band-condition-order`          | 重なる条件の順序で、500.00 以上の分類だけが変わる比較         | [CSV](../expected/01-case-aggregation/order-amount-bands/amount-band-condition-order.csv)               |
-| `order-action-priority`                | 未払いと高額が重なる注文で、業務規則に応じた対応を選ぶ        | [CSV](../expected/01-case-aggregation/order-handling-priority/order-action-priority.csv)                |
-| `customer-tier-value-order`            | コードの値順を使い、希望する業務順との違いを観察する          | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-value-order.csv)            |
-| `customer-tier-business-order`         | ORDER BY CASE と一意な第 2 キーで業務順を安定させる           | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-business-order.csv)         |
-| `customer-tier-business-order-derived` | 派生表で優先度に名前を付け、同じ出力列・行順を得る            | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-business-order-derived.csv) |
+| 問い合わせの識別子                     | 読む内容                                                      | 期待 CSV                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `customer-tier-label-comparison`       | 固定コードを変換する単純 CASE と検索 CASE の同等比較          | [CSV](../expected/01-case-aggregation/02-customer-tier-labels/customer-tier-label-comparison.csv)          |
+| `customer-tier-null-and-else`          | WHEN NULL と IS NULL、未定義コード、ELSE 省略による結果の違い | [CSV](../expected/01-case-aggregation/02-customer-tier-labels/customer-tier-null-and-else.csv)             |
+| `amount-band-equivalent-ranges`        | 上位からの下限判定と、重ならない金額範囲による同等比較        | [CSV](../expected/01-case-aggregation/03-order-amount-bands/amount-band-equivalent-ranges.csv)             |
+| `amount-band-condition-order`          | 重なる条件の順序で、500.00 以上の分類だけが変わる比較         | [CSV](../expected/01-case-aggregation/03-order-amount-bands/amount-band-condition-order.csv)               |
+| `order-action-priority`                | 未払いと高額が重なる注文で、業務規則に応じた対応を選ぶ        | [CSV](../expected/01-case-aggregation/04-order-handling-priority/order-action-priority.csv)                |
+| `customer-tier-value-order`            | コードの値順を使い、希望する業務順との違いを観察する          | [CSV](../expected/01-case-aggregation/05-customer-business-order/customer-tier-value-order.csv)            |
+| `customer-tier-business-order`         | ORDER BY CASE と一意な第 2 キーで業務順を安定させる           | [CSV](../expected/01-case-aggregation/05-customer-business-order/customer-tier-business-order.csv)         |
+| `customer-tier-business-order-derived` | 派生表で優先度に名前を付け、同じ出力列・行順を得る            | [CSV](../expected/01-case-aggregation/05-customer-business-order/customer-tier-business-order-derived.csv) |
 
 ### CASE による分類別集計と条件別指標
 
 読む順序は、金額帯別の集計、複数の条件別指標、平均へ渡す値と分母、空入力の条件付き集約とする。
 各ファイル内は識別子の記述順に読む。
-入力から集計結果と平均の分母を導く対応表は、[集計の粒度と平均の分母](notes/case-aggregation-grain-and-averages.md) にまとめた。
+入力から集計結果と平均の分母を導く対応表は、[集計の粒度と平均の分母](notes/01-case-aggregation/06-09-case-aggregation-grain-and-averages.md) にまとめた。
 この作業単位は制作側の自己確認・CLI 検証と静的な独立レビューが済み、修正が必要な指摘はない。
 両 GUI での本人確認は 2026-11-14 の本人報告に基づいて完了を記録し、本人の学習は未確認を維持する。
 この教材は両 GUI での本人確認を経て `main` に取り込み済みであり、本人の学習は未確認である。
 
-| 問い合わせの識別子                           | 読む内容                                                                       | 期待 CSV                                                                                                               |
-| -------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| `amount-band-summary-direct`                 | CASE の分類キーで集約し、同額の別注文と NULL キーのグループを保つ              | [CSV](../expected/01-case-aggregation/amount-band-summary/amount-band-summary-direct.csv)                              |
-| `amount-band-summary-derived`                | 派生表で分類してから同じ件数・合計・平均を求める同等比較                       | [CSV](../expected/01-case-aggregation/amount-band-summary/amount-band-summary-derived.csv)                             |
-| `conditional-metrics-case`                   | 顧客別の全件数と、支払済み・未払いの件数・判明合計・判明平均を並べる           | [CSV](../expected/01-case-aggregation/conditional-order-metrics/conditional-metrics-case.csv)                          |
-| `conditional-metrics-filter`                 | 同じ入力・条件・集約単位で、集約ごとの FILTER へ書き換える同等比較             | [CSV](../expected/01-case-aggregation/conditional-order-metrics/conditional-metrics-filter.csv)                        |
-| `conditional-metrics-where-paid`             | 問い合わせ全体の WHERE で未払いの入力と顧客 2 のグループが除かれる差を観察する | [CSV](../expected/01-case-aggregation/conditional-order-metrics/conditional-metrics-where-paid.csv)                    |
-| `conditional-average-input-values`           | ELSE 省略と ELSE 0.00 が各注文から平均へ渡す値を、集約前の明細で追う           | [CSV](../expected/01-case-aggregation/conditional-average-denominators/conditional-average-input-values.csv)           |
-| `conditional-average-denominator-comparison` | CASE・FILTER の平均と、ELSE 0.00 で対象が変わる平均を、分母の件数と比べる      | [CSV](../expected/01-case-aggregation/conditional-average-denominators/conditional-average-denominator-comparison.csv) |
-| `empty-conditional-aggregate-overall`        | 空入力の全体集約は件数 0・平均 NULL の 1 行であり、ELSE も 0 を生成しない      | [CSV](../expected/01-case-aggregation/empty-conditional-aggregates/empty-conditional-aggregate-overall.csv)            |
-| `empty-conditional-aggregate-grouped`        | 同じ空入力を顧客別に集約するとグループがなく、ヘッダーだけの 0 行になる        | [CSV](../expected/01-case-aggregation/empty-conditional-aggregates/empty-conditional-aggregate-grouped.csv)            |
+| 問い合わせの識別子                           | 読む内容                                                                       | 期待 CSV                                                                                                                  |
+| -------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `amount-band-summary-direct`                 | CASE の分類キーで集約し、同額の別注文と NULL キーのグループを保つ              | [CSV](../expected/01-case-aggregation/06-amount-band-summary/amount-band-summary-direct.csv)                              |
+| `amount-band-summary-derived`                | 派生表で分類してから同じ件数・合計・平均を求める同等比較                       | [CSV](../expected/01-case-aggregation/06-amount-band-summary/amount-band-summary-derived.csv)                             |
+| `conditional-metrics-case`                   | 顧客別の全件数と、支払済み・未払いの件数・判明合計・判明平均を並べる           | [CSV](../expected/01-case-aggregation/07-conditional-order-metrics/conditional-metrics-case.csv)                          |
+| `conditional-metrics-filter`                 | 同じ入力・条件・集約単位で、集約ごとの FILTER へ書き換える同等比較             | [CSV](../expected/01-case-aggregation/07-conditional-order-metrics/conditional-metrics-filter.csv)                        |
+| `conditional-metrics-where-paid`             | 問い合わせ全体の WHERE で未払いの入力と顧客 2 のグループが除かれる差を観察する | [CSV](../expected/01-case-aggregation/07-conditional-order-metrics/conditional-metrics-where-paid.csv)                    |
+| `conditional-average-input-values`           | ELSE 省略と ELSE 0.00 が各注文から平均へ渡す値を、集約前の明細で追う           | [CSV](../expected/01-case-aggregation/08-conditional-average-denominators/conditional-average-input-values.csv)           |
+| `conditional-average-denominator-comparison` | CASE・FILTER の平均と、ELSE 0.00 で対象が変わる平均を、分母の件数と比べる      | [CSV](../expected/01-case-aggregation/08-conditional-average-denominators/conditional-average-denominator-comparison.csv) |
+| `empty-conditional-aggregate-overall`        | 空入力の全体集約は件数 0・平均 NULL の 1 行であり、ELSE も 0 を生成しない      | [CSV](../expected/01-case-aggregation/09-empty-conditional-aggregates/empty-conditional-aggregate-overall.csv)            |
+| `empty-conditional-aggregate-grouped`        | 同じ空入力を顧客別に集約するとグループがなく、ヘッダーだけの 0 行になる        | [CSV](../expected/01-case-aggregation/09-empty-conditional-aggregates/empty-conditional-aggregate-grouped.csv)            |
 
 ### 期待 CSV の役割と担当
 
@@ -84,6 +84,39 @@
 照合成功時と、SQL エラー・結果不一致などでスクリプトが終了する場合の両方で後片付けを行う。
 本人や Codex が照合のたびに手動で削除する作業は不要であり、期待 CSV は書き換えない。
 GUI の結果をエクスポートして期待 CSV を用意する操作は不要である。
+
+## 教材の命名・配置と学習内容の調整（2026-11-14）
+
+本人の要望に基づき、教材の作成順を追いやすくするため、SQL のファイル名に区分内の二桁連番とハイフンを付けた。
+同じ制作単位内では、本書で案内してきた学習順に採番した。
+今後は既存番号を維持し、同じ区分の追加教材は末尾の次番号、新しい区分は `01-` から採番する。
+
+| 番号の範囲 | 制作単位                          |
+| ---------- | --------------------------------- |
+| 01         | 初回 CASE/FILTER 教材             |
+| 02～05     | CASE の分類・優先順位・業務順     |
+| 06～09     | CASE による分類別集計と条件別指標 |
+
+期待 CSV は、SQL と対応する 9 個の親ディレクトリ名にも同じ番号を付けた。
+補足は区分ごとのディレクトリへ置き、対象 SQL の番号範囲をファイル名の先頭に付ける。
+今回の補足は [06～09 の集計の粒度と平均の分母](notes/01-case-aggregation/06-09-case-aggregation-grain-and-averages.md) へ移した。
+継続ルールは AGENTS.md に反映し、初期計画は確定時の記録として変更していない。
+
+本人の学習目的を、初級脱出と中級へのステップアップを中心とする方針へ明確化した。
+後続のすべての区分では、基本構文や単一機能だけの導入例を最小限の少数の問いへまとめ、実務的な応用例と使い分けの判断を中心に制作する。
+応用例を理解するために必要なコメント・前提説明・有用な再説明の丁寧さは維持する。
+今回の既存教材の内容は維持し、基礎教材の統合・削減は行っていない。
+
+今回の変更は SQL 9 ファイル・期待 CSV 22 ファイル・補足 1 ファイルの名前・配置と、それに対応する参照・記録・継続ルールの更新である。
+SQL の処理本体・入力・22 個の example 識別子と、22 CSV の内容は変更していない。
+SQL コメント中の参照ファイル名は現在の名前に更新した。
+SQL と期待 CSV の対応、参照先、リンク、番号・配置、文字コード・改行・差分を静的に確認した。
+実行スクリプト、共通データ、環境設定は変更していない。
+
+本書中の既存教材の実行手順は、現在のファイル名へ読み替えている。
+過去の CLI 検証・独立レビュー・GUI 確認は連番付与前の教材に対する記録として保持する。
+今回、連番付与後のパスでの SQL 再実行・`verify` や DB・コンテナ操作は行っていない。
+既存 13 問の本人の学習完了、06～09 の 9 問の本人の学習未確認、性能未評価を維持する。
 
 ## 環境と使い方
 
@@ -109,8 +142,8 @@ bash scripts/study.sh reset-data
 `verify` は教材を照合し、ファイル指定を省略した場合は作成済みの教材をすべて照合する。
 
 ```bash
-bash scripts/study.sh run sql/01-case-aggregation/paid-order-summary.sql
-bash scripts/study.sh verify sql/01-case-aggregation/paid-order-summary.sql
+bash scripts/study.sh run sql/01-case-aggregation/01-paid-order-summary.sql
+bash scripts/study.sh verify sql/01-case-aggregation/01-paid-order-summary.sql
 bash scripts/study.sh verify
 ```
 
@@ -248,17 +281,19 @@ SQL 整形設定の制作側の確認も同日に記録した。
 Docker Desktop が起動し、既設コンテナとローカルイメージがあることを確認してから実行した。
 `start` は既設サービスを起動するために使用し、イメージ取得・データ再構築は行っていない。
 リポジトリのルートを開いた Git Bash で、次を実行した。
+以下の教材パスは、連番付与後の現在名へ読み替えている。
+当時の実行検証は旧名で行っており、連番付与時の新パスでの再実行は未実施である。
 
 ```bash
 bash scripts/study.sh start
-bash scripts/study.sh run sql/01-case-aggregation/customer-tier-labels.sql
-bash scripts/study.sh verify sql/01-case-aggregation/customer-tier-labels.sql
-bash scripts/study.sh run sql/01-case-aggregation/order-amount-bands.sql
-bash scripts/study.sh verify sql/01-case-aggregation/order-amount-bands.sql
-bash scripts/study.sh run sql/01-case-aggregation/order-handling-priority.sql
-bash scripts/study.sh verify sql/01-case-aggregation/order-handling-priority.sql
-bash scripts/study.sh run sql/01-case-aggregation/customer-business-order.sql
-bash scripts/study.sh verify sql/01-case-aggregation/customer-business-order.sql
+bash scripts/study.sh run sql/01-case-aggregation/02-customer-tier-labels.sql
+bash scripts/study.sh verify sql/01-case-aggregation/02-customer-tier-labels.sql
+bash scripts/study.sh run sql/01-case-aggregation/03-order-amount-bands.sql
+bash scripts/study.sh verify sql/01-case-aggregation/03-order-amount-bands.sql
+bash scripts/study.sh run sql/01-case-aggregation/04-order-handling-priority.sql
+bash scripts/study.sh verify sql/01-case-aggregation/04-order-handling-priority.sql
+bash scripts/study.sh run sql/01-case-aggregation/05-customer-business-order.sql
+bash scripts/study.sh verify sql/01-case-aggregation/05-customer-business-order.sql
 bash scripts/study.sh verify
 bash scripts/study.sh stop
 ```
@@ -370,7 +405,7 @@ CASE などの構文は標準 SQL を優先する。
 各問い合わせ内の `VALUES`・派生表で専用入力を定義し、永続テーブルは追加しない。
 比較に必要な入力は各問い合わせへ再掲し、問い合わせ単独で実行できるようにした。
 初期計画の専用データの追加を、今回も読み取り専用の入力として具体化した。
-問いを追える単位として次の 4 ファイルへ分け、複数の例をつなぐ説明は [補足](notes/case-aggregation-grain-and-averages.md) にまとめた。
+問いを追える単位として次の 4 ファイルへ分け、複数の例をつなぐ説明は [補足](notes/01-case-aggregation/06-09-case-aggregation-grain-and-averages.md) にまとめた。
 
 - 金額帯別集計の 10 行は、0・分類境界と前後・同額の別注文・金額 NULL の 2 注文を含む。
   キー 1・2・3・NULL の 4 グループへまとめ、直接の分類式と派生表の両版で、重複数・集約対象・出力順を揃える。
@@ -394,16 +429,18 @@ AVG の数値を丸めず、PostgreSQL の numeric の表示をそのまま照�
 Docker Desktop と既設の専用サービスが開始前から稼働し、対象イメージがローカルにあることを読み取り確認した。
 既に healthy なサービスを利用したため、今回 `start` と `stop` は実行していない。
 リポジトリのルートを開いた Git Bash で、次を実行した。
+以下の教材パスは、連番付与後の現在名へ読み替えている。
+当時の実行検証は旧名で行っており、連番付与時の新パスでの再実行は未実施である。
 
 ```bash
-bash scripts/study.sh run sql/01-case-aggregation/amount-band-summary.sql
-bash scripts/study.sh verify sql/01-case-aggregation/amount-band-summary.sql
-bash scripts/study.sh run sql/01-case-aggregation/conditional-order-metrics.sql
-bash scripts/study.sh verify sql/01-case-aggregation/conditional-order-metrics.sql
-bash scripts/study.sh run sql/01-case-aggregation/conditional-average-denominators.sql
-bash scripts/study.sh verify sql/01-case-aggregation/conditional-average-denominators.sql
-bash scripts/study.sh run sql/01-case-aggregation/empty-conditional-aggregates.sql
-bash scripts/study.sh verify sql/01-case-aggregation/empty-conditional-aggregates.sql
+bash scripts/study.sh run sql/01-case-aggregation/06-amount-band-summary.sql
+bash scripts/study.sh verify sql/01-case-aggregation/06-amount-band-summary.sql
+bash scripts/study.sh run sql/01-case-aggregation/07-conditional-order-metrics.sql
+bash scripts/study.sh verify sql/01-case-aggregation/07-conditional-order-metrics.sql
+bash scripts/study.sh run sql/01-case-aggregation/08-conditional-average-denominators.sql
+bash scripts/study.sh verify sql/01-case-aggregation/08-conditional-average-denominators.sql
+bash scripts/study.sh run sql/01-case-aggregation/09-empty-conditional-aggregates.sql
+bash scripts/study.sh verify sql/01-case-aggregation/09-empty-conditional-aggregates.sql
 bash scripts/study.sh verify
 ```
 

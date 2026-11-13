@@ -3,14 +3,14 @@
 行ごとの分類を集計へつなぎ、条件付き平均が何個の値を使うかを整理する。
 SQL と詳細な処理説明は、次の順に読む。
 
-1. [金額帯別の集計](../../sql/01-case-aggregation/amount-band-summary.sql)：同じ分類キーを持つ注文をまとめる。
-2. [複数の条件別指標](../../sql/01-case-aggregation/conditional-order-metrics.sql)：顧客ごとの件数・合計・平均を並べる。
-3. [平均へ渡す値と分母](../../sql/01-case-aggregation/conditional-average-denominators.sql)：ELSE の有無で分母が変わる理由を追う。
-4. [空入力の条件付き集約](../../sql/01-case-aggregation/empty-conditional-aggregates.sql)：集計結果の 1 行と 0 行を区別する。
+1. [金額帯別の集計](../../../sql/01-case-aggregation/06-amount-band-summary.sql)：同じ分類キーを持つ注文をまとめる。
+2. [複数の条件別指標](../../../sql/01-case-aggregation/07-conditional-order-metrics.sql)：顧客ごとの件数・合計・平均を並べる。
+3. [平均へ渡す値と分母](../../../sql/01-case-aggregation/08-conditional-average-denominators.sql)：ELSE の有無で分母が変わる理由を追う。
+4. [空入力の条件付き集約](../../../sql/01-case-aggregation/09-empty-conditional-aggregates.sql)：集計結果の 1 行と 0 行を区別する。
 
 ## 分類した明細から集計行へ
 
-`amount-band-summary.sql` の元の入力は、1 行 1 注文の 10 行である。
+`06-amount-band-summary.sql` の元の入力は、1 行 1 注文の 10 行である。
 CASE で求める分類キーは、1 が少額、2 が中額、3 が高額、NULL が金額不明を表す。
 派生表で分類する段階では 10 行を保ち、外側の `GROUP BY amount_band_no` で 4 行へまとめる。
 結果の 1 行は 1 注文ではなく、同じ分類キーを持つ注文全体である。
@@ -37,7 +37,7 @@ CASE で求める分類キーは、1 が少額、2 が中額、3 が高額、NUL
 
 ## 条件別件数・合計・平均の対象
 
-`conditional-order-metrics.sql` は別の専用入力を使い、1 行を 1 注文から 1 顧客の集計へ変える。
+`07-conditional-order-metrics.sql` は別の専用入力を使い、1 行を 1 注文から 1 顧客の集計へ変える。
 支払状態は `paid` と `unpaid` だけとし、金額 NULL と支払状態を別の情報として扱う。
 顧客 1 の同額の未払い 2 件は別注文であり、両方を件数・合計・平均へ含める。
 
