@@ -5,12 +5,19 @@
 
 ## 教材一覧
 
-| 区分                       | 教材                                                                          | 作成     | 実行検証            | 教材レビュー                  | 本人の学習 |
-| -------------------------- | ----------------------------------------------------------------------------- | -------- | ------------------- | ----------------------------- | ---------- |
-| CASE・条件付き集約・FILTER | [支払済み注文の件数と合計](../sql/01-case-aggregation/paid-order-summary.sql) | 作成済み | CLI で 5 問照合済み | 再レビュー済み・指摘 3 件解消 | 完了       |
+| 区分                       | 教材                                                                          | 作成     | 実行検証            | 教材レビュー                     | 本人の学習 |
+| -------------------------- | ----------------------------------------------------------------------------- | -------- | ------------------- | -------------------------------- | ---------- |
+| CASE・条件付き集約・FILTER | [支払済み注文の件数と合計](../sql/01-case-aggregation/paid-order-summary.sql) | 作成済み | CLI で 5 問照合済み | 再レビュー済み・指摘 3 件解消    | 完了       |
+| CASE・条件付き集約・FILTER | [顧客区分のラベル化](../sql/01-case-aggregation/customer-tier-labels.sql)     | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [金額帯の分類](../sql/01-case-aggregation/order-amount-bands.sql)             | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [注文対応の優先順位](../sql/01-case-aggregation/order-handling-priority.sql)  | 作成済み | CLI で 1 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [顧客の業務順](../sql/01-case-aggregation/customer-business-order.sql)        | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
 
-入力は [固定データ](../data/reset.sql) で定義する。
+初回教材の入力は [固定データ](../data/reset.sql) で定義する。
+分類・優先順位・業務順の教材は、それぞれの問い合わせ内の `VALUES` で専用入力を定義する。
 各期待 CSV は入力と問い合わせの意図から導いた値であり、実行結果の記録とは区別する。
+
+### 初回 CASE/FILTER 教材
 
 | 問い合わせの識別子         | 読む内容                                                                 | 期待 CSV                                                                               |
 | -------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
@@ -19,6 +26,24 @@
 | `paid-summary-by-customer` | 支払済みがない顧客と金額不明の顧客で、NULL と `ELSE 0.00` の結果を比べる | [CSV](../expected/01-case-aggregation/paid-order-summary/paid-summary-by-customer.csv) |
 | `no-paid-order-rows`       | 該当する注文の明細が 0 行となる場合を確認する                            | [CSV](../expected/01-case-aggregation/paid-order-summary/no-paid-order-rows.csv)       |
 | `aggregate-on-empty-input` | 入力が 0 行でも、グループ分けしない集約は 1 行を返すことを確認する       | [CSV](../expected/01-case-aggregation/paid-order-summary/aggregate-on-empty-input.csv) |
+
+### CASE の分類・優先順位・業務順
+
+読む順序は、顧客区分のラベル化、金額帯の分類、注文対応の優先順位、顧客の業務順とする。
+各ファイル内は、識別子の記述順に比較する。
+この作業単位は制作・CLI 検証と静的な独立レビューが済み、修正が必要な指摘はない。
+新教材は両 GUI での本人確認も完了しており、`main` への取り込みは未実施である。
+
+| 問い合わせの識別子                     | 読む内容                                                      | 期待 CSV                                                                                                |
+| -------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `customer-tier-label-comparison`       | 固定コードを変換する単純 CASE と検索 CASE の同等比較          | [CSV](../expected/01-case-aggregation/customer-tier-labels/customer-tier-label-comparison.csv)          |
+| `customer-tier-null-and-else`          | WHEN NULL と IS NULL、未定義コード、ELSE 省略による結果の違い | [CSV](../expected/01-case-aggregation/customer-tier-labels/customer-tier-null-and-else.csv)             |
+| `amount-band-equivalent-ranges`        | 上位からの下限判定と、重ならない金額範囲による同等比較        | [CSV](../expected/01-case-aggregation/order-amount-bands/amount-band-equivalent-ranges.csv)             |
+| `amount-band-condition-order`          | 重なる条件の順序で、500.00 以上の分類だけが変わる比較         | [CSV](../expected/01-case-aggregation/order-amount-bands/amount-band-condition-order.csv)               |
+| `order-action-priority`                | 未払いと高額が重なる注文で、業務規則に応じた対応を選ぶ        | [CSV](../expected/01-case-aggregation/order-handling-priority/order-action-priority.csv)                |
+| `customer-tier-value-order`            | コードの値順を使い、希望する業務順との違いを観察する          | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-value-order.csv)            |
+| `customer-tier-business-order`         | ORDER BY CASE と一意な第 2 キーで業務順を安定させる           | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-business-order.csv)         |
+| `customer-tier-business-order-derived` | 派生表で優先度に名前を付け、同じ出力列・行順を得る            | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-business-order-derived.csv) |
 
 ### 期待 CSV の役割と担当
 
@@ -157,7 +182,7 @@ SQL 整形設定の制作側の確認も同日に記録した。
 `sql_patterns_study` では再構築に成功し、個別・一括の `verify` がそれぞれ 5 問すべてで期待 CSV と一致した。
 検証後はコンテナを正常停止し、既設のデータボリュームを保持した。
 
-### 第2工程の判定と次の作業
+### 第2工程の判定と初回教材の学習
 
 2026-11-11 に Issue #1 と初期計画の第2工程を照合した。
 制作側の実行検証記録、独立レビューと再レビューの結果、本人による GUI・整形の確認報告に基づき、実装・検証に関する受入条件を満たしている。
@@ -168,10 +193,121 @@ SQL 整形設定の制作側の確認も同日に記録した。
 第2工程は完了した。
 2026-11-12 に本人から初回 CASE/FILTER 教材 5 問の学習完了の申告を受け、教材一覧の本人の学習欄を完了へ更新した。
 
-### 次の制作対象（未着手）
+## 第3工程：CASE の分類・優先順位・業務順
 
-第1区分の学習を継続し、第3工程の次の作業単位として「CASE の分類・優先順位・業務順」を予定する。
-単純 CASE と検索 CASE、分類境界・条件が重なる場合の優先順位・NULL、業務上の表示順を、採用理由と代替記述の比較まで含めて扱う。
-一緒に検証して学習へ渡せる単位として、1 Issue・1 作業ブランチ・1 PR にまとめる。
-境界条件に必要な専用データは制作時に検討し、既存の共通データと初回教材の期待結果を保護する。
-具体的な教材・期待 CSV の作成と実行検証は、次の着手依頼を受けてから行う。
+2026-11-12 に、[Issue #3](https://github.com/seiya-matsuoka/sql-query-patterns-study/issues/3) の教材 SQL 4 ファイル・8 問い合わせと、対応する期待 CSV 8 ファイルを作成した。
+単純 CASE と検索 CASE、分類境界・条件の優先順位・NULL、業務上の表示順を、採用理由と代替記述の比較まで含めて扱う。
+現在は作業ブランチでの制作・CLI 検証、静的な独立レビュー、両 GUI での本人確認が済んだ段階であり、修正が必要な指摘はない。
+`main` への取り込みは未実施である。
+
+### 専用入力と比較条件
+
+専用の永続テーブルは追加せず、各問い合わせの `VALUES` を派生表として使う。
+問い合わせ単独で実行できるよう、比較に使う同じ入力は各問い合わせへ意図的に再掲する。
+初期計画の「必要な時点で専用データを追加する」方針を、今回は読み取り専用の入力として具体化した。
+共通テーブルの定義・データ、初回教材 SQL と期待 CSV、実行スクリプト、環境設定は変更していない。
+
+- 顧客の 6 行は、既知の 3 区分、未定義の `partner`、区分 NULL、同じ優先度になる 2 顧客を含む。
+- 金額の 8 行は、0.00、99.99、100.00、100.01、499.99、500.00、500.01、NULL を含む。
+  同等比較の入力範囲は 0 以上の金額と NULL とし、負数では前提が崩れることもコメントに示す。
+- 対応判断の 8 行は、未払いかつ高額、支払済みかつ金額不明、未払いかつ金額不明、未定義状態、状態 NULL を含む。
+  未払い優先と高額優先は異なる業務規則として比較する。
+- 業務順では、直接の `ORDER BY CASE` と、派生表で優先度を計算する方法が同じ結果になる。
+  コードの値順との比較は、意図した行順の違いとして扱う。
+
+説明は SQL コメントにまとめた。
+今回の範囲では、独立した補足文書は追加していない。
+
+### 今回確認した実行手順
+
+Docker Desktop が起動し、既設コンテナとローカルイメージがあることを確認してから実行した。
+`start` は既設サービスを起動するために使用し、イメージ取得・データ再構築は行っていない。
+リポジトリのルートを開いた Git Bash で、次を実行した。
+
+```bash
+bash scripts/study.sh start
+bash scripts/study.sh run sql/01-case-aggregation/customer-tier-labels.sql
+bash scripts/study.sh verify sql/01-case-aggregation/customer-tier-labels.sql
+bash scripts/study.sh run sql/01-case-aggregation/order-amount-bands.sql
+bash scripts/study.sh verify sql/01-case-aggregation/order-amount-bands.sql
+bash scripts/study.sh run sql/01-case-aggregation/order-handling-priority.sql
+bash scripts/study.sh verify sql/01-case-aggregation/order-handling-priority.sql
+bash scripts/study.sh run sql/01-case-aggregation/customer-business-order.sql
+bash scripts/study.sh verify sql/01-case-aggregation/customer-business-order.sql
+bash scripts/study.sh verify
+bash scripts/study.sh stop
+```
+
+### 制作・レビュー・本人確認の結果
+
+制作側の確認と静的な独立レビューは 2026-11-12 の記録である。
+GUI での本人確認は、2026-11-13 の本人報告に基づいて記録する。
+
+| 確認対象           | 方法・結果                                                                                                                                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 接続先と実行条件   | 専用 DB `sql_patterns_study`、PostgreSQL 18.6、読み取り専用の接続、UTC、ISO・YMD を確認した                                                                                                           |
+| 教材全体の実行     | 新しい 4 ファイルをそれぞれ `run` し、8 問い合わせの表形式の結果を確認した                                                                                                                            |
+| 新教材の個別照合   | 4 ファイルをそれぞれ `verify` し、計 8 問い合わせがすべて期待 CSV と一致した                                                                                                                          |
+| 一括照合・回帰検証 | 引数なしの `verify` で、新教材 8 問と初回教材 5 問の全 13 問が一致した                                                                                                                                |
+| 共通データの保護   | 実行前後に 2 テーブルを読み取り、顧客 4 行・注文 5 行の件数と、ID 順の行内容から求めた照合用ハッシュが一致した                                                                                        |
+| 期待 CSV の保護    | 全 13 CSV の SHA-256 が実行前後で一致し、実行結果から更新していないことを確認した                                                                                                                     |
+| 静的確認           | 新規 SQL と期待 CSV の対応、進捗文書の相対リンク 23 件、変更した 13 ファイルの UTF-8・LF・末尾空白、公開対象の情報を確認した。`git diff --check` も成功した                                           |
+| 停止               | 今回起動した専用サービスを正常停止した。既設のデータボリュームは保持した                                                                                                                              |
+| 独立レビュー       | 2026-11-12 に読み取り専用の静的レビュー済み・修正が必要な指摘なし。制作担当の自己確認・CLI 検証とは別に確認した                                                                                       |
+| GUI の本人確認     | Microsoft PostgreSQL・SQLTools の両方で、新教材 8 問の単独・ファイル全体実行と結果表示を確認済み。NULL を含む分類、条件順序による差、業務順と同じ優先度の行順も確認済み。問題・未確認事項の報告はない |
+| 本人の学習         | 新教材は未確認。初回教材の学習完了を維持する                                                                                                                                                          |
+
+文字列の値順は既設 DB の照合順序に従う。
+今回の入力では `guest`、`partner`、`premium`、`standard` の順になることを実行確認したが、任意の照合順序でも同じになるとは扱わない。
+CASE が返す数値の業務優先度と、一意な顧客 ID による表示順は、このコードの値順と区別している。
+性能は実測しておらず、各書き方の性能は未評価である。
+
+### 独立レビュー（2026-11-12）
+
+対象は新規 SQL 4 ファイル・8 問い合わせ、期待 CSV 8 ファイル、本書の今回の更新である。
+読み取り専用の静的レビューで、修正が必要な指摘はなかった。
+2026-11-13 に、教材一覧と確認結果へレビュー済み・指摘なしを反映した。
+
+- 単純 CASE と検索 CASE の同等性、WHEN NULL と IS NULL、未知コードと未登録、ELSE 省略の説明が、入力・SQL・期待 CSV と対応していた。
+- 非負の金額と NULL を前提とする同等比較、分類境界とその前後、条件順序による意図的な結果の違いを確認した。
+  注文 204 では未払い優先と高額優先の差が現れ、金額 NULL・未定義状態・状態 NULL の結果も説明と一致した。
+- 業務順の未知コード・NULL の位置と、一意な顧客 ID による表示順の安定化を確認した。
+  直接の ORDER BY CASE と派生表は入力・出力列・行順が一致し、両期待 CSV も同一であった。
+- 顧客入力 5 問い合わせと金額帯入力 2 問い合わせは、それぞれ同じ VALUES を使用していた。
+  8 個の識別子と期待 CSV に過不足がなく、ヘッダー・値・NULL・行順が整合していた。
+- コメントの説明と進捗の状態区分、対象 13 ファイルの文字コード・改行・末尾空白・最終改行、相対リンク 23 件、`git diff --check` を確認した。
+  既存の共通データ定義、初回教材、実行基盤、環境設定に今回の差分はなかった。
+
+独立レビューでは SQL 実行やコンテナ操作を行っていない。
+全 13 問の実行照合、共通データと期待 CSV の実行前後の保護、専用コンテナの正常停止は、制作側の実行記録として区別する。
+2026-11-13 の記録反映も本書のみの変更とし、状態の整合性、相対リンク、文字コード・改行、差分を静的に確認した。
+この反映時に SQL やコンテナの再実行は行っていない。
+
+### GUI の本人確認（2026-11-13 報告）
+
+本人から、Microsoft PostgreSQL・SQLTools の両方で、新教材 4 ファイル・8 問い合わせの単独実行・ファイル全体の実行と結果表示を確認したとの報告を受けた。
+NULL を含む分類、条件順序による結果の差、業務順と同じ優先度の行順も、すべて確認済みである。
+問題や未確認事項の報告はない。
+
+この GUI 確認は本人の実施結果であり、制作側の CLI 検証と静的な独立レビューとは区別する。
+本書への反映では文書更新と静的確認のみを行い、SQL 実行やコンテナ操作は行っていない。
+GUI の確認完了を、新教材の本人の学習完了として扱わない。
+
+### 受入状況と次の作業
+
+Issue #3 の教材制作・実行検証・静的な独立レビュー・両 GUI の本人確認が揃い、修正対応や確認待ちの残件はない。
+本人の学習状態は未確認、性能は未評価のままとし、初回教材の学習完了を維持する。
+次は、本人が教材 SQL・期待 CSV と進捗文書を目的別にコミットし、`feat/3-case-classification` から `main` への PR を準備する。
+PR には変更内容、制作側の実行検証、静的な独立レビュー、GUI の本人確認、学習状態と性能の扱いを記載する。
+本人が差分と確認結果を確認し、コミット・プッシュ・PR 作成・`main` への取り込みを判断する。
+`main` への取り込み後に、新教材を本人の学習へ渡す。
+後続教材の制作は、別の着手依頼を受けてから行う。
+
+### 技術的な参照先
+
+- [PostgreSQL 18 の CASE](https://www.postgresql.org/docs/18/functions-conditional.html#FUNCTIONS-CASE)：単純 CASE と検索 CASE、最初に真となる分岐、ELSE 省略、結果型の前提。
+- [PostgreSQL 18 の VALUES](https://www.postgresql.org/docs/18/queries-values.html)：永続表を作らない定数の入力表と、列名を付ける書き方。
+- [PostgreSQL 18 の ORDER BY](https://www.postgresql.org/docs/18/queries-order.html)：式による並べ替え、後続キー、NULL の配置。
+
+CASE などの構文は標準 SQL を優先する。
+文字列の照合順序、`VALUES` の列型の決定、CLI の結果形式については、この PostgreSQL 環境の確認結果として扱う。
