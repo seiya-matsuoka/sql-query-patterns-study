@@ -1,0 +1,6 @@
+customer_id,order_count,paid_order_count,known_paid_amount_count,paid_average_case,paid_average_filter,else_zero_value_count,paid_average_else_zero
+1,5,3,2,50.0000000000000000,50.0000000000000000,4,25.0000000000000000
+2,1,0,0,<NULL>,<NULL>,1,0.00000000000000000000
+3,1,1,0,<NULL>,<NULL>,0,<NULL>
+4,1,1,1,0.00000000000000000000,0.00000000000000000000,1,0.00000000000000000000
+5,2,1,0,<NULL>,<NULL>,1,0.00000000000000000000

@@ -1,0 +1,6 @@
+customer_id,order_count,paid_order_count,known_paid_amount_count,known_paid_total,known_paid_average,unpaid_order_count,known_unpaid_amount_count,known_unpaid_total,known_unpaid_average
+1,5,3,2,100.00,50.0000000000000000,2,2,120.00,60.0000000000000000
+2,1,0,0,<NULL>,<NULL>,1,1,80.00,80.0000000000000000
+3,1,1,0,<NULL>,<NULL>,0,0,<NULL>,<NULL>
+4,1,1,1,0.00,0.00000000000000000000,0,0,<NULL>,<NULL>
+5,2,1,0,<NULL>,<NULL>,1,1,40.00,40.0000000000000000

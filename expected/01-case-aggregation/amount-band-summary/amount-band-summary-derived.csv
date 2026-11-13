@@ -1,0 +1,5 @@
+amount_band_no,order_count,known_amount_count,known_total,known_average
+1,2,2,99.99,49.9950000000000000
+2,4,4,800.00,200.0000000000000000
+3,2,2,1000.01,500.0050000000000000
+<NULL>,2,0,<NULL>,<NULL>

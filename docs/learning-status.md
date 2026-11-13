@@ -5,16 +5,20 @@
 
 ## 教材一覧
 
-| 区分                       | 教材                                                                          | 作成     | 実行検証            | 教材レビュー                     | 本人の学習 |
-| -------------------------- | ----------------------------------------------------------------------------- | -------- | ------------------- | -------------------------------- | ---------- |
-| CASE・条件付き集約・FILTER | [支払済み注文の件数と合計](../sql/01-case-aggregation/paid-order-summary.sql) | 作成済み | CLI で 5 問照合済み | 再レビュー済み・指摘 3 件解消    | 完了       |
-| CASE・条件付き集約・FILTER | [顧客区分のラベル化](../sql/01-case-aggregation/customer-tier-labels.sql)     | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [金額帯の分類](../sql/01-case-aggregation/order-amount-bands.sql)             | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [注文対応の優先順位](../sql/01-case-aggregation/order-handling-priority.sql)  | 作成済み | CLI で 1 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
-| CASE・条件付き集約・FILTER | [顧客の業務順](../sql/01-case-aggregation/customer-business-order.sql)        | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| 区分                       | 教材                                                                                  | 作成     | 実行検証            | 教材レビュー                     | 本人の学習 |
+| -------------------------- | ------------------------------------------------------------------------------------- | -------- | ------------------- | -------------------------------- | ---------- |
+| CASE・条件付き集約・FILTER | [支払済み注文の件数と合計](../sql/01-case-aggregation/paid-order-summary.sql)         | 作成済み | CLI で 5 問照合済み | 再レビュー済み・指摘 3 件解消    | 完了       |
+| CASE・条件付き集約・FILTER | [顧客区分のラベル化](../sql/01-case-aggregation/customer-tier-labels.sql)             | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [金額帯の分類](../sql/01-case-aggregation/order-amount-bands.sql)                     | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [注文対応の優先順位](../sql/01-case-aggregation/order-handling-priority.sql)          | 作成済み | CLI で 1 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [顧客の業務順](../sql/01-case-aggregation/customer-business-order.sql)                | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 完了       |
+| CASE・条件付き集約・FILTER | [金額帯別の集計](../sql/01-case-aggregation/amount-band-summary.sql)                  | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [複数の条件別指標](../sql/01-case-aggregation/conditional-order-metrics.sql)          | 作成済み | CLI で 3 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [平均へ渡す値と分母](../sql/01-case-aggregation/conditional-average-denominators.sql) | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
+| CASE・条件付き集約・FILTER | [空入力の条件付き集約](../sql/01-case-aggregation/empty-conditional-aggregates.sql)   | 作成済み | CLI で 2 問照合済み | 静的な独立レビュー済み・指摘なし | 未確認     |
 
 初回教材の入力は [固定データ](../data/reset.sql) で定義する。
-分類・優先順位・業務順の教材は、それぞれの問い合わせ内の `VALUES` で専用入力を定義する。
+分類・優先順位・業務順と、分類別集計・条件別指標の教材は、それぞれの問い合わせ内の `VALUES` で専用入力を定義する。
 各期待 CSV は入力と問い合わせの意図から導いた値であり、実行結果の記録とは区別する。
 
 ### 初回 CASE/FILTER 教材
@@ -44,6 +48,27 @@
 | `customer-tier-value-order`            | コードの値順を使い、希望する業務順との違いを観察する          | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-value-order.csv)            |
 | `customer-tier-business-order`         | ORDER BY CASE と一意な第 2 キーで業務順を安定させる           | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-business-order.csv)         |
 | `customer-tier-business-order-derived` | 派生表で優先度に名前を付け、同じ出力列・行順を得る            | [CSV](../expected/01-case-aggregation/customer-business-order/customer-tier-business-order-derived.csv) |
+
+### CASE による分類別集計と条件別指標
+
+読む順序は、金額帯別の集計、複数の条件別指標、平均へ渡す値と分母、空入力の条件付き集約とする。
+各ファイル内は識別子の記述順に読む。
+入力から集計結果と平均の分母を導く対応表は、[集計の粒度と平均の分母](notes/case-aggregation-grain-and-averages.md) にまとめた。
+この作業単位は制作側の自己確認・CLI 検証と静的な独立レビューが済み、修正が必要な指摘はない。
+両 GUI での本人確認は 2026-11-14 の本人報告に基づいて完了を記録し、本人の学習は未確認を維持する。
+`main` への取り込みは未実施であり、既存 13 問の学習完了と区別する。
+
+| 問い合わせの識別子                           | 読む内容                                                                       | 期待 CSV                                                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `amount-band-summary-direct`                 | CASE の分類キーで集約し、同額の別注文と NULL キーのグループを保つ              | [CSV](../expected/01-case-aggregation/amount-band-summary/amount-band-summary-direct.csv)                              |
+| `amount-band-summary-derived`                | 派生表で分類してから同じ件数・合計・平均を求める同等比較                       | [CSV](../expected/01-case-aggregation/amount-band-summary/amount-band-summary-derived.csv)                             |
+| `conditional-metrics-case`                   | 顧客別の全件数と、支払済み・未払いの件数・判明合計・判明平均を並べる           | [CSV](../expected/01-case-aggregation/conditional-order-metrics/conditional-metrics-case.csv)                          |
+| `conditional-metrics-filter`                 | 同じ入力・条件・集約単位で、集約ごとの FILTER へ書き換える同等比較             | [CSV](../expected/01-case-aggregation/conditional-order-metrics/conditional-metrics-filter.csv)                        |
+| `conditional-metrics-where-paid`             | 問い合わせ全体の WHERE で未払いの入力と顧客 2 のグループが除かれる差を観察する | [CSV](../expected/01-case-aggregation/conditional-order-metrics/conditional-metrics-where-paid.csv)                    |
+| `conditional-average-input-values`           | ELSE 省略と ELSE 0.00 が各注文から平均へ渡す値を、集約前の明細で追う           | [CSV](../expected/01-case-aggregation/conditional-average-denominators/conditional-average-input-values.csv)           |
+| `conditional-average-denominator-comparison` | CASE・FILTER の平均と、ELSE 0.00 で対象が変わる平均を、分母の件数と比べる      | [CSV](../expected/01-case-aggregation/conditional-average-denominators/conditional-average-denominator-comparison.csv) |
+| `empty-conditional-aggregate-overall`        | 空入力の全体集約は件数 0・平均 NULL の 1 行であり、ELSE も 0 を生成しない      | [CSV](../expected/01-case-aggregation/empty-conditional-aggregates/empty-conditional-aggregate-overall.csv)            |
+| `empty-conditional-aggregate-grouped`        | 同じ空入力を顧客別に集約するとグループがなく、ヘッダーだけの 0 行になる        | [CSV](../expected/01-case-aggregation/empty-conditional-aggregates/empty-conditional-aggregate-grouped.csv)            |
 
 ### 期待 CSV の役割と担当
 
@@ -329,22 +354,134 @@ Issue #3 の教材制作・実行検証・静的な独立レビュー・両 GUI 
 CASE などの構文は標準 SQL を優先する。
 文字列の照合順序、`VALUES` の列型の決定、CLI の結果形式については、この PostgreSQL 環境の確認結果として扱う。
 
-## 次の制作対象（未着手）
+## 第3工程：CASE による分類別集計と条件別指標
 
-第1区分の次の作業単位として、「CASE による分類別集計と条件別指標」を予定する。
-行ごとの分類から、分類別の集計と、同じ入力から求める複数の条件別指標へ進む。
-次の内容を、一緒に検証して学習へ渡せる 1 Issue・1 作業ブランチ・1 PR の単位にまとめる。
+2026-11-14 に、[Issue #5](https://github.com/seiya-matsuoka/sql-query-patterns-study/issues/5) の教材 SQL 4 ファイル・9 問い合わせ、期待 CSV 9 ファイル、補足 1 ファイルを作成した。
+行ごとの分類から分類別集計へ進み、複数の条件別件数・合計・平均と、平均の分母を比較する。
+制作側の自己確認・CLI の実行検証を完了した。
+2026-11-14 に別のレビュー用チャットで静的な独立レビューを実施し、修正が必要な指摘はなかった。
+2026-11-14 に、Microsoft PostgreSQL・SQLTools の両方で今回の教材全範囲を確認済みとの本人報告を受けた。
+今回の教材の本人の学習は未確認である。
+既存の初回教材と分類・優先順位・業務順の計 13 問については、本人の申告に基づく学習完了を維持する。
 
-- CASE で求めた区分ごとの `GROUP BY` と、派生表で先に分類する記述の比較。
-  明細行から集計行への粒度の変化と、分類キーが NULL となる場合のグループの意味を説明する。
-- 複数の条件別件数・合計・平均を同じ問い合わせで求め、CASE と集約ごとの FILTER を比較する。
-  問い合わせ全体の WHERE が入力行や残るグループに与える影響も区別する。
-- 条件付き AVG の分母、金額 NULL と実額 0、ELSE 省略と ELSE 0、該当なし・入力なしの扱い。
-  同等な書き換えと、平均の対象が変わる比較を明示する。
+### 専用入力と構成の調整
 
-比較条件に応じて問い合わせ内の VALUES などで専用入力を用意し、既存の共通データ・教材・期待 CSV を保護する。
-教材数やファイル数は固定せず、問いと処理・結果を追えるまとまりで具体化する。
-教材・期待 CSV の作成と実行検証は未着手であり、制作開始の依頼後に行う。
+各問い合わせ内の `VALUES`・派生表で専用入力を定義し、永続テーブルは追加しない。
+比較に必要な入力は各問い合わせへ再掲し、問い合わせ単独で実行できるようにした。
+初期計画の専用データの追加を、今回も読み取り専用の入力として具体化した。
+問いを追える単位として次の 4 ファイルへ分け、複数の例をつなぐ説明は [補足](notes/case-aggregation-grain-and-averages.md) にまとめた。
 
-CASE を WHERE・HAVING に置く用途、顧客区分によって変わる基準値、売上・返金の UNION ALL との比較などは、第1区分の後続対象として残る。
-今回の作業単位へ第1区分の残りすべてを詰め込まず、学習後の反応と到達目標から後続のまとまりを判断する。
+- 金額帯別集計の 10 行は、0・分類境界と前後・同額の別注文・金額 NULL の 2 注文を含む。
+  キー 1・2・3・NULL の 4 グループへまとめ、直接の分類式と派生表の両版で、重複数・集約対象・出力順を揃える。
+  NULL キーを持つ入力行が同じグループへまとまることと、入力がないことを区別する。
+- 条件別指標の 10 行は、5 顧客の支払済み・未払い、金額 NULL・実額 0、同額の別注文を含む。
+  CASE と FILTER は同等比較とし、WHERE による全体の入力削減は結果が異なる比較とする。
+  WHERE 版では顧客 2 のグループが消え、残る顧客の全件数と未払い指標も変わる。
+- 平均の教材は、顧客 1 の 5 明細行で CASE の戻り値を示してから、同じ 10 注文を顧客別に集計する。
+  各平均と同じ式を COUNT に渡して分母を表示し、ELSE 0.00 の分母が全注文件数とも異なる条件を説明する。
+  顧客 1 の CASE・FILTER の平均は 100.00 / 2 = 50、ELSE 0.00 の平均は 100.00 / 4 = 25 である。
+- 空入力は専用の 2 注文を WHERE で除いて作り、全体集約の 1 行と顧客別集約の 0 行を比較する。
+  ELSE 0.00 があっても、入力行がなければ平均に使う 0 は生まれない。
+
+期待 CSV は、入力と要件から分類・件数・加算・分母を導いて実行前に作成した。
+AVG の数値を丸めず、PostgreSQL の numeric の表示をそのまま照合する。
+表示桁・NULL の CLI 表記は DBMS と既存の実行方式に依存する条件として補足に示した。
+共通データ、既存教材・期待 CSV、初期計画、実行基盤、環境設定、AGENTS.md は変更していない。
+
+### 今回確認した実行手順
+
+Docker Desktop と既設の専用サービスが開始前から稼働し、対象イメージがローカルにあることを読み取り確認した。
+既に healthy なサービスを利用したため、今回 `start` と `stop` は実行していない。
+リポジトリのルートを開いた Git Bash で、次を実行した。
+
+```bash
+bash scripts/study.sh run sql/01-case-aggregation/amount-band-summary.sql
+bash scripts/study.sh verify sql/01-case-aggregation/amount-band-summary.sql
+bash scripts/study.sh run sql/01-case-aggregation/conditional-order-metrics.sql
+bash scripts/study.sh verify sql/01-case-aggregation/conditional-order-metrics.sql
+bash scripts/study.sh run sql/01-case-aggregation/conditional-average-denominators.sql
+bash scripts/study.sh verify sql/01-case-aggregation/conditional-average-denominators.sql
+bash scripts/study.sh run sql/01-case-aggregation/empty-conditional-aggregates.sql
+bash scripts/study.sh verify sql/01-case-aggregation/empty-conditional-aggregates.sql
+bash scripts/study.sh verify
+```
+
+### 制作側の自己確認と実行検証（2026-11-14）
+
+| 確認対象           | 方法・結果                                                                                                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 接続先と実行条件   | 専用 DB `sql_patterns_study`、PostgreSQL 18.6、`default_transaction_read_only=on`、UTF-8 のクライアント、UTC、ISO・YMD を確認した                                                 |
+| 教材全体の実行     | 新しい 4 ファイルをそれぞれ `run` し、9 問い合わせの結果を確認した。NULL キーのグループ、WHERE による顧客の除去、平均の分母、空入力の 1 行と 0 行を含む                           |
+| 新教材の個別照合   | 4 ファイルをそれぞれ `verify` し、計 9 問すべてが期待 CSV と一致した                                                                                                              |
+| 一括照合・回帰検証 | 引数なしの `verify` で、新教材 9 問と既存教材 13 問の全 22 問が一致し、終了コード 0 で完了した                                                                                    |
+| 共通データの保護   | 検証前後に 2 表を読み取り、顧客 4 行・注文 5 行の件数と、ID 順の行内容から求めたハッシュが一致した。データ再構築・更新・削除は行っていない                                        |
+| 期待 CSV の保護    | 新規 9 ファイルと既存 13 ファイルの全 22 CSV で、実行前後の SHA-256 が一致した。実行結果から期待 CSV を更新していない                                                             |
+| 既存ファイルの保護 | 進捗文書を除く既存の追跡ファイル 27 個の SHA-256 が着手時と一致した。既存教材・共通データ定義・実行基盤・環境設定を保護した                                                       |
+| 静的な自己確認     | 9 識別子と 9 CSV の対応、同等比較の入力、1 識別子 1 SELECT、相対リンク、変更 15 ファイルの UTF-8・BOM なし・LF・末尾空白・最終改行、公開対象の情報、`git diff --check` を確認した |
+| 検証後の環境       | 開始前から稼働していた専用サービスは healthy のまま維持した。起動・停止、イメージ取得、依存関係追加、設定変更、ボリューム削除は行っていない                                       |
+
+制作側の確認で SQL エラー・期待結果との不一致はなく、未解決の実行失敗はない。
+実行環境への最初の読み取り確認は sandbox の Docker API 接続制限で失敗し、承認された実行経路から確認・検証を行った。
+これは教材の実行失敗と区別する。
+各書き方の性能は実測しておらず、未評価である。
+
+### 独立レビュー（2026-11-14）
+
+対象は新規 SQL 4 ファイル・9 問い合わせ、期待 CSV 9 ファイル、補足 1 ファイル、本書の今回の更新である。
+別のレビュー用チャットで読み取り専用の静的レビューを実施したとの報告を受け、本書へ反映した。
+修正が必要な指摘はなく、任意の改善提案として追加を求められた事項もない。
+
+- 金額帯別集計の 10 明細行から 4 集計行への粒度の変化と、NULL キーの 2 注文が 1 グループとして残ることを確認した。
+  直接版と派生表版の入力・分類境界・NULL・重複数・集約式・出力列・最終順序は一致していた。
+- CASE と FILTER の件数・合計・平均の対応、注文件数と非 NULL 金額の件数の区別を確認した。
+  全体の WHERE で未払い 4 行と顧客 2 のグループが除かれ、顧客 1・5 の件数と未払い指標が変わる差も説明と対応していた。
+- 顧客 1 の平均は ELSE 省略で 100 / 2 = 50、ELSE 0.00 で 100 / 4 = 25 となる。
+  金額 NULL の支払済みは THEN で NULL のままとなり、ELSE では補完されないことを確認した。
+  顧客 2 の該当なし、顧客 3 の全値 NULL、顧客 4 の実額 0、顧客 5 の支払済み NULL と未払いの混在も区別されていた。
+- 空入力の全体集約は件数 0・平均 NULL の 1 行、顧客別集約はヘッダーだけの 0 行であり、SQL・コメント・CSV が対応していた。
+- 全 9 CSV の列名・値・重複の扱い・行数・順序と補足の表を確認した。
+  同等比較の CSV 2 組はファイル内容も一致し、比較対象の入力 5 組にも差はなかった。
+- 説明量、処理の段階、採用理由、代替記述、同等条件、意図した結果の差は学習ガイドの基準を満たしていた。
+  作成・制作側の実行検証・独立レビュー・GUI 本人確認・本人の学習の区別も確認した。
+- 識別子と CSV の対応、相対ファイルリンク 42 件、対象 15 ファイルの UTF-8・BOM なし・LF・末尾空白なし・最終改行、`git diff --check` は正常だった。
+
+独立レビューでは SQL 実行、`verify`、DB・コンテナ操作、GUI 確認、性能測定を行っていない。
+全 22 問の実行照合、実行前後のデータ・ファイルのハッシュ一致は、制作側の実行検証の記録として区別する。
+追加の実行確認を必要とする問題は見つかっていない。
+レビュー担当によるファイル変更、Git・GitHub の状態変更はなかった。
+今回のレビュー結果の反映も本書のみの変更とし、状態・リンク・文字コード・改行・差分を静的に確認した。
+この反映時に SQL の再実行や DB・コンテナ操作は行っていない。
+
+### GUI の本人確認（2026-11-14 報告）
+
+本人から、Microsoft PostgreSQL・SQLTools の両方で、新教材 4 ファイル・9 問の全範囲を確認済みとの報告を受けた。
+
+- 各 9 問の単独実行、各 4 ファイル全体の実行と 2・3・2・2 個の結果表を確認済み。
+- NULL キーのグループ、WHERE による差、平均 50 と 25、空入力の 1 行と 0 行を確認済み。
+- 両拡張を有効にした際の干渉はなく、問題・未確認事項の報告もない。
+
+この確認は本人による GUI の実行・結果表示の確認であり、制作側の CLI 検証と静的な独立レビューとは区別する。
+GUI の動作確認の報告であり、本人の学習完了の申告ではないため、今回の学習状態は未確認を維持する。
+今回の反映も本書のみの変更とし、状態・リンク・文字コード・改行・差分を静的に確認した。
+SQL の再実行や DB・コンテナ操作は行っていない。
+
+### 本人確認・学習・受入状況
+
+| 状態              | 現在の記録                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 作成              | SQL 4 ファイル・9 問、期待 CSV 9 ファイル、補足 1 ファイルを作成済み                                                            |
+| 実行検証          | 制作側の CLI 検証済み。個別 9 問と、既存 13 問を含む一括 22 問が一致した                                                        |
+| 独立レビュー      | 2026-11-14 に静的な独立レビュー済み。修正が必要な指摘なし。任意の改善提案としての追加要求もなし                                 |
+| GUI の本人確認    | 2026-11-14 の本人報告に基づき、両 GUI で新教材 4 ファイル・9 問の単独・全体実行と結果表示を確認済み。干渉・問題・未確認事項なし |
+| main への取り込み | 未実施。作業ブランチ `feat/5-case-aggregation-metrics` で制作・検証した                                                         |
+| 本人の学習        | 未確認。今回の新教材の学習状態の申告は受けていない                                                                              |
+
+Issue #5 の制作側の自己確認・CLI 検証、静的な独立レビュー、両 GUI の本人確認が揃い、制作・確認に関する受入条件を満たしている。
+修正対応や確認待ちの残件はない。
+次は本人が目的別のコミット・push・PR 作成を行い、最終差分と確認結果を確認して main へのマージを判断する。
+GUI 確認の完了を本人の学習完了として扱わず、今回の学習状態は本人の申告があるまで未確認を維持する。
+Git・GitHub の状態変更は行っていない。
+
+第1区分全体の制作・学習完了とは扱わない。
+CASE を WHERE・HAVING に置く用途、顧客区分によって変わる基準値、売上・返金の UNION ALL との比較などは、引き続き後続対象として残る。
+現在は本人による Git・GitHub の操作に進む段階であり、後続教材は制作していない。

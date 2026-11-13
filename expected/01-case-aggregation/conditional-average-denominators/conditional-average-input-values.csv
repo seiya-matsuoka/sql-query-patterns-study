@@ -1,0 +1,6 @@
+order_id,status,amount,paid_amount,paid_amount_else_zero
+101,paid,100.00,100.00,100.00
+102,paid,0.00,0.00,0.00
+103,paid,<NULL>,<NULL>,<NULL>
+104,unpaid,60.00,<NULL>,0.00
+105,unpaid,60.00,<NULL>,0.00
