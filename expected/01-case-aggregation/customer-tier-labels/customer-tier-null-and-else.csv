@@ -1,0 +1,7 @@
+customer_id,customer_tier,simple_when_null_label,searched_null_label,omitted_else_label
+1,premium,優先,優先,優先
+2,standard,通常,通常,通常
+3,guest,ゲスト,ゲスト,ゲスト
+4,partner,その他,その他,<NULL>
+5,<NULL>,その他,未登録,<NULL>
+6,premium,優先,優先,優先
