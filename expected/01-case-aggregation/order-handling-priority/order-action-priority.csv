@@ -1,0 +1,9 @@
+order_id,status,amount,payment_first_action,amount_first_action
+201,paid,100.00,出荷可,出荷可
+202,paid,500.00,高額確認,高額確認
+203,unpaid,80.00,入金待ち,入金待ち
+204,unpaid,500.00,入金待ち,高額確認
+205,paid,<NULL>,金額確認,金額確認
+206,unpaid,<NULL>,入金待ち,入金待ち
+207,refunded,500.00,状態確認,状態確認
+208,<NULL>,500.00,状態確認,状態確認
