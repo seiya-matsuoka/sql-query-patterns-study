@@ -1,0 +1,4 @@
+candidate_no,candidate_value,in_result,not_in_result,exists_result,not_exists_result
+1,1,f,t,f,t
+2,2,f,t,f,t
+3,<NULL>,f,t,f,t

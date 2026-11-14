@@ -1,0 +1,6 @@
+customer_id,customer_name,order_id,amount
+1,顧客01,104,<NULL>
+6,顧客06,601,<NULL>
+9,顧客09,<NULL>,<NULL>
+10,顧客10,1002,<NULL>
+12,顧客12,<NULL>,<NULL>
