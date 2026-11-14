@@ -8,6 +8,7 @@ usage() {
     cat <<'USAGE'
 使い方: bash scripts/study.sh start
         bash scripts/study.sh reset-data
+        bash scripts/study.sh reset-practice-data
         bash scripts/study.sh run <sql/配下のSQLファイル>
         bash scripts/study.sh verify [sql/配下のSQLファイル]
         bash scripts/study.sh stop
@@ -139,7 +140,7 @@ verify_lessons() (
 )
 
 case "${1:-}" in
-start | reset-data | stop) (($# == 1)) || invalid_arguments ;;
+start | reset-data | reset-practice-data | stop) (($# == 1)) || invalid_arguments ;;
 run) (($# == 2)) || invalid_arguments ;;
 verify) (($# <= 2)) || invalid_arguments ;;
 -h | --help)
@@ -156,6 +157,10 @@ start) compose up --detach --wait --wait-timeout 60 db ;;
 reset-data)
     psql_in_db off --quiet <data/reset.sql
     printf '学習用データを再構築した\n'
+    ;;
+reset-practice-data)
+    psql_in_db off --quiet <data/practice.sql
+    printf 'practice の共用データを再構築した\n'
     ;;
 run)
     file=$(lesson_path "$2")

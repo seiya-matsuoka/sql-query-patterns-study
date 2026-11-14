@@ -1,0 +1,4 @@
+customer_id,customer_tier,paid_order_count,known_paid_amount_count,known_paid_total
+2,standard,1,1,500.00
+3,premium,1,1,300.00
+11,premium,1,1,300.01
