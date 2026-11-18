@@ -14,6 +14,8 @@ $check_database$;
 CREATE SCHEMA IF NOT EXISTS practice;
 
 -- 再構築対象を列挙する。依存する別の教材があれば CASCADE で消さずに失敗させる。
+DROP TABLE IF EXISTS practice.categories;
+
 DROP TABLE IF EXISTS practice.money_movements;
 
 DROP TABLE IF EXISTS practice.orders;
@@ -38,6 +40,14 @@ CREATE TABLE practice.money_movements (
     customer_id INTEGER NOT NULL REFERENCES practice.customers (customer_id),
     movement_type VARCHAR(6) NOT NULL CHECK (movement_type IN ('sale', 'refund')),
     amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0)
+);
+
+-- 根は親なしとする。自己参照の外部キーは親の存在を確認するが、循環までは防がない。
+-- 階層教材の入力は、有限で循環しない木構造として用意する。
+CREATE TABLE practice.categories (
+    category_id INTEGER PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL,
+    parent_category_id INTEGER REFERENCES practice.categories (category_id)
 );
 
 INSERT INTO
@@ -94,5 +104,16 @@ VALUES
     (4, 2, 'sale', 300.00),
     (5, 2, 'refund', 300.00),
     (6, 3, 'refund', 50.00);
+
+INSERT INTO
+    practice.categories (category_id, category_name, parent_category_id)
+VALUES
+    (1, '商品', NULL),
+    (2, '食品', 1),
+    (3, '雑貨', 1),
+    (4, '飲料', 2),
+    (5, '菓子', 2),
+    (6, '文具', 3),
+    (7, 'サービス', NULL);
 
 COMMIT;

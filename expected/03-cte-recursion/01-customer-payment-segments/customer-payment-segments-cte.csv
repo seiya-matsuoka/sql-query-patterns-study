@@ -1,0 +1,5 @@
+customer_group,customer_count,paid_order_count,known_paid_amount_count,known_paid_total
+amount-unknown,3,7,4,999.99
+known-at-least-500,3,4,4,2400.00
+known-below-500,5,6,6,900.00
+no-paid-orders,2,0,0,<NULL>
