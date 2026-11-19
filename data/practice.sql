@@ -32,7 +32,8 @@ CREATE TABLE practice.orders (
     order_id INTEGER PRIMARY KEY,
     customer_id INTEGER NOT NULL REFERENCES practice.customers (customer_id),
     status VARCHAR(12) NOT NULL CHECK (status IN ('paid', 'unpaid')),
-    amount DECIMAL(10, 2) CHECK (amount >= 0)
+    amount DECIMAL(10, 2) CHECK (amount >= 0),
+    ordered_at TIMESTAMP NOT NULL
 );
 
 CREATE TABLE practice.money_movements (
@@ -69,29 +70,151 @@ VALUES
 
 -- 顧客 1 は個々の注文が基準未満でも判明合計で到達し、顧客 10 は不明分が残る。
 -- 実額 0、全額 NULL、未払いのみ、区分不明は別の顧客・注文で区別する。
+-- 顧客 1 の 101・102 は最新日時が同じであり、104 と 103 の間には注文のない日がある。
+-- 105 は 101・102 より注文 ID が大きく、注文日時は古い。
 INSERT INTO
-    practice.orders (order_id, customer_id, status, amount)
+    practice.orders (order_id, customer_id, status, amount, ordered_at)
 VALUES
-    (101, 1, 'paid', 250.00),
-    (102, 1, 'paid', 250.00),
-    (103, 1, 'paid', 0.00),
-    (104, 1, 'paid', NULL),
-    (105, 1, 'unpaid', 900.00),
-    (201, 2, 'paid', 500.00),
-    (202, 2, 'paid', 100.00),
-    (301, 3, 'paid', 300.00),
-    (302, 3, 'paid', 0.00),
-    (303, 3, 'unpaid', 900.00),
-    (401, 4, 'paid', 299.99),
-    (501, 5, 'paid', 0.00),
-    (601, 6, 'paid', NULL),
-    (701, 7, 'paid', 900.00),
-    (801, 8, 'paid', 900.00),
-    (901, 9, 'unpaid', 900.00),
-    (1001, 10, 'paid', 499.99),
-    (1002, 10, 'paid', NULL),
-    (1101, 11, 'paid', 300.01),
-    (1301, 13, 'paid', 0.00);
+    (
+        101,
+        1,
+        'paid',
+        250.00,
+        TIMESTAMP '2025-01-08 09:00:00'
+    ),
+    (
+        102,
+        1,
+        'paid',
+        250.00,
+        TIMESTAMP '2025-01-08 09:00:00'
+    ),
+    (
+        103,
+        1,
+        'paid',
+        0.00,
+        TIMESTAMP '2025-01-07 09:00:00'
+    ),
+    (
+        104,
+        1,
+        'paid',
+        NULL,
+        TIMESTAMP '2025-01-03 09:00:00'
+    ),
+    (
+        105,
+        1,
+        'unpaid',
+        900.00,
+        TIMESTAMP '2025-01-02 09:00:00'
+    ),
+    (
+        201,
+        2,
+        'paid',
+        500.00,
+        TIMESTAMP '2025-01-06 11:00:00'
+    ),
+    (
+        202,
+        2,
+        'paid',
+        100.00,
+        TIMESTAMP '2025-01-02 11:00:00'
+    ),
+    (
+        301,
+        3,
+        'paid',
+        300.00,
+        TIMESTAMP '2025-01-03 10:00:00'
+    ),
+    (
+        302,
+        3,
+        'paid',
+        0.00,
+        TIMESTAMP '2025-01-04 10:00:00'
+    ),
+    (
+        303,
+        3,
+        'unpaid',
+        900.00,
+        TIMESTAMP '2025-01-05 10:00:00'
+    ),
+    (
+        401,
+        4,
+        'paid',
+        299.99,
+        TIMESTAMP '2025-01-04 11:00:00'
+    ),
+    (
+        501,
+        5,
+        'paid',
+        0.00,
+        TIMESTAMP '2025-01-05 09:00:00'
+    ),
+    (
+        601,
+        6,
+        'paid',
+        NULL,
+        TIMESTAMP '2025-01-05 10:00:00'
+    ),
+    (
+        701,
+        7,
+        'paid',
+        900.00,
+        TIMESTAMP '2025-01-06 09:00:00'
+    ),
+    (
+        801,
+        8,
+        'paid',
+        900.00,
+        TIMESTAMP '2025-01-06 10:00:00'
+    ),
+    (
+        901,
+        9,
+        'unpaid',
+        900.00,
+        TIMESTAMP '2025-01-07 10:00:00'
+    ),
+    (
+        1001,
+        10,
+        'paid',
+        499.99,
+        TIMESTAMP '2025-01-07 12:00:00'
+    ),
+    (
+        1002,
+        10,
+        'paid',
+        NULL,
+        TIMESTAMP '2025-01-08 12:30:00'
+    ),
+    (
+        1101,
+        11,
+        'paid',
+        300.01,
+        TIMESTAMP '2025-01-08 13:00:00'
+    ),
+    (
+        1301,
+        13,
+        'paid',
+        0.00,
+        TIMESTAMP '2025-01-08 14:00:00'
+    );
 
 -- 対象期間の売上・返金台帳であり、上の注文金額との一致は前提にしない。
 -- 顧客 3 の返金に対応する売上は対象期間外である。
